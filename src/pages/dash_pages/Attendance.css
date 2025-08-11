@@ -1,0 +1,82 @@
+.dash_page.attendance {
+    padding: 3.4rem 3rem 1rem 3rem;
+
+    & h2 {
+        font-size: 1.4rem;
+    }
+}
+
+.dash_page.attendance .staffListContainer {
+    /* background-color: var(--lightGray); */
+    width: min(100%, 50rem);
+    height: calc(100vh - 13.5rem);
+    /* border-radius: 2rem; */
+    margin-top: 3rem;
+    /* padding: 2rem; */
+    overflow-y: scroll;
+
+
+    & ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-right: 0.3rem;
+    }
+
+    & li {
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 1rem;
+        border-radius: 1rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+
+
+        & img {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+
+    & .profileInformation {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+    }
+
+    & .fullName {
+        font-size: 1.1rem;
+        font-weight: 700;
+    }
+    & .username {
+        font-size: 0.9rem;
+        font-weight: 600;
+        opacity: 0.5;
+    }
+    & .qrLink {
+        margin-left: auto;
+        /* justify-self: flex-end; */
+    }
+}
+
+
+    ::-webkit-scrollbar {
+    width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+    border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+    background: rgba(88,88,88,0.4); 
+    border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(88,88,88,0.7); 
+    }
