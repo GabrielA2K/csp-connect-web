@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import './Login.css';
 
+import LoginArt from '../assets/login-art.svg';
+
 const Login = () => {
     const [formData, setFormData] = useState({
         username: '',
@@ -56,12 +58,14 @@ const Login = () => {
 
   return (
     <div className="page login">
-      <div className="visualizer"></div>
+      <div className="visualizer">
+        <img src={LoginArt} alt="" />
+      </div>
       
       <div className="divider"><div className="bar"></div></div>
       
       <div className="form">
-        <h1 className='fontExtraBold'>Checkins Admin</h1>
+        <h1 className='fontExtraBold'>CSP Connect</h1>
         <form onSubmit={handleLogin}>
             <p className="fontExtraBold"><span className='textAccent'>Login.</span><br/><span className='fontBold'>Provide your registered credentials</span></p>
             <input

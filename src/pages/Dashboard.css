@@ -14,13 +14,13 @@
     margin: 0;
     border-radius: 0;
 }
-.page.dashboard:has(.signout:hover) {
+/* .page.dashboard:has(.signout:hover) {
     min-height: 100vh;
     min-width: 100vw;
     margin: 0;
     border-radius: 0;
     transition: 300ms;
-}
+} */
 
 .page.dashboard nav.sidebar {
     display: flex;
@@ -62,13 +62,14 @@
         &.signout {
             font-size: 1.1rem;
             margin-top: auto;
-            transition: 800ms;
+            /* transition: 800ms; */
             
 
             &:hover {
                 transition: 300ms;
                 color: var(--red);
-                transform: translate(0.5rem, -0.5rem);
+                transform: translateX(-0.2rem);
+                /* transform: translate(0.5rem, -0.5rem); */
             }
         }
         
