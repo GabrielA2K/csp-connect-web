@@ -7,13 +7,13 @@
 }
 
 .dash_page.attendance .staffListContainer {
-    /* background-color: var(--lightGray); */
+    background-color: white;
     width: min(100%, 50rem);
     height: calc(100vh - 13.5rem);
     /* border-radius: 2rem; */
     margin-top: 3rem;
     /* padding: 2rem; */
-    overflow-y: scroll;
+    overflow-y: auto;
 
 
     & ul {
@@ -25,13 +25,13 @@
     }
 
     & li {
-        background-color: rgba(255, 255, 255, 0.6);
+        background-color: rgba(255, 255, 255, 0.9);
         padding: 1rem;
-        border-radius: 1rem;
+        border-radius: 1.5rem;
         display: flex;
         gap: 1rem;
         align-items: center;
-        border: 1px solid rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.07);
 
 
         & img {
@@ -60,6 +60,9 @@
     & .qrLink {
         margin-left: auto;
         /* justify-self: flex-end; */
+        &.signout {
+            color: var(--orange);
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getAllUsers, getAttendanceQR } from '../../api.js';
+import { getAllUsers, getAttendanceQR, getAttendanceOutQR } from '../../api.js';
 import './Attendance.css';
 
 const Attendance = () => {
@@ -21,6 +21,7 @@ const Attendance = () => {
         if (allUsers) {
             console.log("Updated users:", allUsers.data);
         }
+        
         if (allUsers?.data) {
             allUsers.data.forEach(user => {
             const userData = { user: user._id };
@@ -29,13 +30,28 @@ const Attendance = () => {
                 .then(response => {
                 setQrLinks(prev => ({
                     ...prev,
-                    [user._id]: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&ecLevel=L&size=200&format=svg`
+                    [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&ecLevel=L&size=200&format=svg`, type: 'in' }
                 }));
                 })
                 .catch(error => {
-                console.error("Error fetching QR code:", error);
+                    // if (error.response.status === 409) {
+                    //     setQrLinks(prev => ({
+                    //         ...prev,
+                    //         [user._id]: `Already Checked In`
+                    //     }));
+                    // }
+                    getAttendanceOutQR(userData)
+                    .then(response => {
+                    setQrLinks(prev => ({
+                        ...prev,
+                        [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&ecLevel=L&size=200&format=svg`, type: 'out' }
+                    }));
+                    })
+                    
+                console.log("Error fetching QR code:", error.response.status);
                 });
             });
+            
         }
     }, [allUsers]);
 
@@ -58,14 +74,10 @@ const Attendance = () => {
           </p>
           <p className="username">@{user.username}</p>
         </div>
-        <a
-          href={qrLinks[user._id] || '#'}
-          target="_blank"
-          rel="noopener noreferrer"
-          className='qrLink'
-        >
-          {qrLinks[user._id] ? 'Open QR Code' : 'Unavailable'}
-        </a>
+        {
+            (qrLinks[user._id] && qrLinks[user._id].type === 'in') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink'>QR Sign In</a> : (qrLinks[user._id] && qrLinks[user._id].type === 'out') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink signout'>QR Sign Out</a> : <p className="qrLink"></p>
+        }
+        
       </li>
     ))}
                 </ul>

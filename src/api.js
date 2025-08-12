@@ -26,3 +26,4 @@ export const getProfile = () => API.get('/me');
 export const getAllUsers = () => API.get('/user?');
 
 export const getAttendanceQR = (data) => API.get(`/attendance/${data.user}/in/code`, data);
+export const getAttendanceOutQR = (data) => API.get(`/attendance/${data.user}/out/code`, data);
