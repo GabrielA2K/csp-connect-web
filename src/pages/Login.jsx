@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Icon } from "@iconify/react";
 import './Login.css';
 
+import CSP from '../assets/csp.svg';
+
 import LoginArt from '../assets/login-art.svg';
 
 const Login = () => {
@@ -65,9 +67,13 @@ const Login = () => {
       <div className="divider"><div className="bar"></div></div>
       
       <div className="form">
-        <h1 className='fontExtraBold'>CSP Connect</h1>
+        <header>
+            <img className='logo' src={CSP} alt="CSP Logo" />
+            <h1 className='fontExtraBold'>CSP Connect</h1>
+        </header>
+        
         <form className='loginForm' onSubmit={handleLogin}>
-            <p className="fontExtraBold"><span className='textAccent'>Login.</span><br/><span className='fontBold'>Provide your registered credentials</span></p>
+            <p className="fontExtraBold"><span className='textAccent'>Login.</span><br/><br /><span className='fontBold'>Provide your registered credentials</span></p>
             <input
                 type="text"
                 name="username"

@@ -19,16 +19,20 @@ export const getUsers = () => API.get('/users');
 export const createUser = (userData) => API.post('/users', userData);
 
 // Example: Login
-export const login = (credentials) => API.post('auth/admin/login', credentials);
+export const login = (credentials) => API.post('/auth/admin/login', credentials);
 
-export const batchRegisterUsers = (credentials) => API.post('auth/register/batch', credentials);
+export const batchRegisterUsers = (credentials) => API.post('/auth/register/batch', credentials);
+
+export const batchAddEquipments = (data) => API.post('/equipment/batch', data);
 
 
 export const getProfile = () => API.get('/me');
 
 export const getAllUsers = () => API.get('/user?limit=100&page=1');
 
-export const getUserEquipment = () => API.get('equipment/logged?limit=100&page=1');
+export const getUserEquipment = () => API.get('/equipment/logged?limit=100&page=1');
+
+export const getAllEquipment = () => API.get('/equipment?limit=100&page=1');
 
 export const getAttendanceQR = (data) => API.get(`/attendance/${data.user}/in/code`);
 
@@ -40,3 +44,6 @@ export const getUserLocationHistory = (params) => API.get(`/location/${params.us
 
 export const getUserAttendanceHistory = (params) => API.get(`user/${params.user}/history?limit=100&page=1`);
 
+export const deleteAllUsers = () => API.delete('/user/staffs');
+
+export const deleteEquipmentLogs = () => API.delete('/internal/equipment-logs');

@@ -131,6 +131,7 @@ const StaffManagement = () => {
     const handleFetchLocationHistory = async (userId) => {
         
         try {
+            setHistoryTab('attendance');
             const response = await getUserLocationHistory({ user: userId, date: '2025-08-12' });
             setSelectedUserLocationHistory(response.data);
             console.log(response.data);
@@ -193,7 +194,7 @@ const StaffManagement = () => {
         <div className="dash_page staffManagement">
             <div className="header">
                 <h2>Staff List <span className='textAccent'>{allUsers?.meta?.total}</span></h2>
-                <button onClick={() => {setShowForm(true); setFormData([{ username: '', password: '' }]);}}>Add Staff</button>
+                <button onClick={() => { setShowForm(true); setFormData([{ username: '', password: '' }]);}}>Add Staff</button>
             </div>
             
             <div className="contentContainer">
