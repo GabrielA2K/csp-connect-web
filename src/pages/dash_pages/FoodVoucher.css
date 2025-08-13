@@ -118,19 +118,19 @@
         /* background-color: rgb(from var(--blue) r g b / 0.08); */
         background-color: white;
 
-        &.out {
+        &.claimed {
             color: var(--orange);
             background-color: rgb(from var(--orange) r g b / 0.06);
         }
-        &.pendingOut {
+        &.gabriel {
             color: var(--red);
             background-color: rgb(from var(--red) r g b / 0.06);
         }
-        &.in {
+        &.unavailable {
             color: var(--gray);
             background-color: rgb(from var(--gray) r g b / 0.06);
         }
-        &.done {
+        &.unclaimed {
             color: var(--blue);
             background-color: rgb(from var(--blue) r g b / 0.06);
         }

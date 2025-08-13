@@ -66,7 +66,7 @@ const Login = () => {
       
       <div className="form">
         <h1 className='fontExtraBold'>CSP Connect</h1>
-        <form onSubmit={handleLogin}>
+        <form className='loginForm' onSubmit={handleLogin}>
             <p className="fontExtraBold"><span className='textAccent'>Login.</span><br/><span className='fontBold'>Provide your registered credentials</span></p>
             <input
                 type="text"

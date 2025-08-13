@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "@iconify/react";
 
 import Attendance from "./dash_pages/Attendance.jsx";
+import StaffManagement from "./dash_pages/StaffManagement.jsx";
+import FoodVoucher from "./dash_pages/FoodVoucher.jsx";
 
 import './Dashboard.css';
 
@@ -71,7 +73,10 @@ const Dashboard = () => {
                         
                         case 'attendance':
                             return <Attendance />;
-                       
+                        case 'staffManagement':
+                            return <StaffManagement />;
+                        case 'foodVoucher':
+                            return <FoodVoucher />;
                     }
                 })()}
             </main>

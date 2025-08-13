@@ -73,7 +73,7 @@ input {
     }
 }
 
-button {
+form.loginForm button {
     margin-top: 1rem;
     border-radius: 2rem;
     background-color: var(--accent);
