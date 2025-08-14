@@ -4,22 +4,27 @@ import { getAllUsers, getAttendanceQR, getAttendanceOutQR } from '../../api.js';
 import './Attendance.css';
 
 const Attendance = () => {
+    const [loaded, setLoad] = useState(false);
     const [allUsers, setAllUsers] = useState(null)
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserQR, setSelectedUserQR] = useState(null);
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                setLoad(false);
                 const response = await getAllUsers();
                 setAllUsers(response.data)
                 // console.log(allUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
+            } finally {
+                setLoad(true);
             }
         };
         fetchUsers();
     }, []);
     const [qrLinks, setQrLinks] = useState({});
+
     useEffect(() => {
         if (allUsers) {
             console.log("Updated users:", allUsers.data);
@@ -28,23 +33,27 @@ const Attendance = () => {
         if (allUsers?.data) {
             allUsers.data.forEach(user => {
             const userData = { user: user._id };
-
+                setLoad(false);
             getAttendanceQR(userData)
                 .then(response => {
+                    setLoad(true);
                 setQrLinks(prev => ({
                     ...prev,
                     [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&dark=282828&ecLevel=L&size=200&format=svg`, type: 'in' }
                 }));
                 })
                 .catch(error => {
+                    setLoad(false);
                     getAttendanceOutQR(userData)
                     .then(response => {
+                        setLoad(true);
                     setQrLinks(prev => ({
                         ...prev,
                         [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&dark=282828&ecLevel=L&size=200&format=svg`, type: 'out' }
                     }));
                     })
                     .catch (error => {
+                        setLoad(true);
                         setQrLinks(prev => ({
                             ...prev,
                             [user._id]: { qr: null, type: (error.response.data.message === 'User has equipments that are not logged out') ? 'pendingOut' : ((error.response.data.message === 'User did not timed in') ? 'done' : null) }
@@ -61,7 +70,7 @@ const Attendance = () => {
 
 
     return (
-        <div className="dash_page attendance">
+        <div className={"dash_page attendance" + (loaded ? " show" : "")}>
             <h2>Staff List <span className='textAccent'>{allUsers?.data?.length}</span></h2>
             <div className="contentContainer">
                 <div className="staffListContainer">
@@ -105,6 +114,7 @@ const Attendance = () => {
             </div>
             
         </div>
+
     )
 }
 export default Attendance;

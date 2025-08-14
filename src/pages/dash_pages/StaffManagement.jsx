@@ -21,6 +21,7 @@ function MapMover({ center, zoom }) {
 }
 
 const StaffManagement = () => {
+    const [loaded, setLoad] = useState(false);
     const [allUsers, setAllUsers] = useState(null)
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserLocationHistory, setSelectedUserLocationHistory] = useState(null);
@@ -77,11 +78,14 @@ const StaffManagement = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                setLoad(false);
                 const response = await getAllUsers();
                 setAllUsers(response.data)
                 // console.log(allUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
+            } finally {
+                setLoad(true);
             }
         };
         fetchUsers();
@@ -132,7 +136,7 @@ const StaffManagement = () => {
         
         try {
             setHistoryTab('attendance');
-            const response = await getUserLocationHistory({ user: userId, date: '2025-08-12' });
+            const response = await getUserLocationHistory({ user: userId, date: '2025-08-13' });
             setSelectedUserLocationHistory(response.data);
             console.log(response.data);
             (response.data.length > 0) && setCoords([response.data[0]?.location?.coordinates[1], response.data[0]?.location?.coordinates[0]]);
@@ -150,7 +154,7 @@ const StaffManagement = () => {
             console.log("Attendance Data:", attendanceResponse.data);
         } catch (error) {
             // setLoading(false);
-            console.error("Batch registration failed:", error);
+            console.error(error);
 
         } finally {
            
@@ -191,7 +195,7 @@ const StaffManagement = () => {
     
     const [historyTab, setHistoryTab] = useState('attendance')
     return (
-        <div className="dash_page staffManagement">
+        <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
             <div className="header">
                 <h2>Staff List <span className='textAccent'>{allUsers?.meta?.total}</span></h2>
                 <button onClick={() => { setShowForm(true); setFormData([{ username: '', password: '' }]);}}>Add Staff</button>

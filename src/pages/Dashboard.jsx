@@ -17,6 +17,7 @@ const Dashboard = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.clear();
         navigate('/login');
     };
 
@@ -27,7 +28,12 @@ const Dashboard = () => {
         }
     }, [navigate]);
 
+    const [activeTab, setActiveTab] = useState('attendance');
     useEffect(() => {
+        const savedTab = localStorage.getItem('dashTab');
+        if (savedTab) {
+            setActiveTab(savedTab);
+        }
         const timer = setTimeout(() => {
             setIsPageFull(false);
             console.log("Page is now windowed"); 
@@ -36,7 +42,7 @@ const Dashboard = () => {
 
     }, []);
 
-    const [activeTab, setActiveTab] = useState('attendance');
+    
 
     return (
         <div className={"page dashboard" + (isPageFull ? " full" : "")}>
@@ -51,19 +57,19 @@ const Dashboard = () => {
                         <Icon icon="mingcute:chart-pie-2-line" width={28}/>
                         Dashboard
                     </li> */}
-                    <li className={activeTab === 'attendance' ? 'active' : ''} onClick={() => setActiveTab('attendance')}>
+                    <li className={activeTab === 'attendance' ? 'active' : ''} onClick={() => {setActiveTab('attendance'); localStorage.setItem('dashTab', 'attendance');}}>
                         <Icon icon="mingcute:list-check-3-line" width={28}/>
                         Staff Attendance
                     </li>
-                    <li className={activeTab === 'foodVoucher' ? 'active' : ''} onClick={() => setActiveTab('foodVoucher')}>
+                    <li className={activeTab === 'foodVoucher' ? 'active' : ''} onClick={() => {setActiveTab('foodVoucher'); localStorage.setItem('dashTab', 'foodVoucher');}}>
                         <Icon icon="mingcute:ticket-line" width={28}/>
                         Food Vouchers
                     </li>
-                    <li className={activeTab === 'staffManagement' ? 'active' : ''} onClick={() => setActiveTab('staffManagement')}>
+                    <li className={activeTab === 'staffManagement' ? 'active' : ''} onClick={() => {setActiveTab('staffManagement'); localStorage.setItem('dashTab', 'staffManagement');}}>
                         <Icon icon="mingcute:group-2-line" width={28}/>
                         Staff Management
                     </li>
-                    <li className={activeTab === 'equipments' ? 'active' : ''} onClick={() => setActiveTab('equipments')}>
+                    <li className={activeTab === 'equipments' ? 'active' : ''} onClick={() => {setActiveTab('equipments'); localStorage.setItem('dashTab', 'equipments');}}>
                         <Icon icon="mingcute:briefcase-2-line" width={28}/>
                         Equipments
                     </li>
@@ -74,21 +80,27 @@ const Dashboard = () => {
                     Sign Out
                 </li>
             </nav>
-            <main>
-                {(() => {
+            <main className={""}>
+                <div className={"mainContainer"}>
+                        {(() => {
                     switch (activeTab) {
-                        
-                        case 'attendance':
-                            return <Attendance />;
-                        case 'staffManagement':
-                            return <StaffManagement />;
-                        case 'foodVoucher':
-                            return <FoodVoucher />;
-                        case 'equipments':
-                            return <Equipment />;
-                    }
-                })()}
+                            
+                            case 'attendance':
+                                return <Attendance />;
+                            case 'staffManagement':
+                                return <StaffManagement />;
+                            case 'foodVoucher':
+                                return <FoodVoucher />;
+                            case 'equipments':
+                                return <Equipment />;
+                        }
+                    })()}
+                </div>
+                <div className="loader">
+                    <Icon icon="svg-spinners:gooey-balls-2" width={150} color="#007AFF" />
+                </div>
             </main>
+            
         </div>
     );
 };

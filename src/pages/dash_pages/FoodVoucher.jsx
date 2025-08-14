@@ -7,14 +7,18 @@ const FoodVoucher = () => {
     const [allUsers, setAllUsers] = useState(null)
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserQR, setSelectedUserQR] = useState(null);
+    const [loaded, setLoad] = useState(false);
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                setLoad(false);
                 const response = await getAllUsers();
                 setAllUsers(response.data)
                 // console.log(allUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
+            } finally {
+                setLoad(true);
             }
         };
         fetchUsers();
@@ -28,15 +32,17 @@ const FoodVoucher = () => {
         if (allUsers?.data) {
             allUsers.data.forEach(user => {
             const userData = { user: user._id };
-
+                setLoad(false);
             getVoucherQR(userData)
                 .then(response => {
+                    setLoad(true);
                 setQrLinks(prev => ({
                     ...prev,
                     [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&dark=282828&ecLevel=L&size=200&format=svg`, type: 'unclaimed' }
                 }));
                 })
                 .catch(error => {
+                    setLoad(true);
                     setQrLinks(prev => ({
                         ...prev,
                         [user._id]: { qr: null, type: (error.response.data.message === 'User does not have food voucher yet') ? 'unavailable' : ((error.response.data.message === 'User already used their food voucher') ? 'claimed' : null) }
@@ -52,7 +58,7 @@ const FoodVoucher = () => {
 
 
     return (
-        <div className="dash_page attendance">
+        <div className={"dash_page attendance" + (loaded ? " show" : "")}>
             <h2>Staff List <span className='textAccent'>{allUsers?.data?.length}</span></h2>
             <div className="contentContainer">
                 <div className="staffListContainer">

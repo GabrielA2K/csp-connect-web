@@ -9,6 +9,7 @@ import Uniform from '../../assets/uniform-orange.svg'
 import CheckBlue from '../../assets/check-blue.svg'
 
 const Equipment = () => {
+    const [loaded, setLoad] = useState(false);
     const [allUsers, setAllUsers] = useState(null)
     const [selectedUser, setSelectedUser] = useState(null);
     
@@ -82,11 +83,14 @@ const Equipment = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
+                setLoad(false);
                 const response = await getAllEquipment();
                 setAllUsers(response.data)
                 // console.log(allUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
+            } finally {
+                setLoad(true);
             }
         };
         fetchUsers();
@@ -151,7 +155,7 @@ const Equipment = () => {
 
     const [historyTab, setHistoryTab] = useState('attendance')
     return (
-        <div className="dash_page staffManagement">
+        <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
             <div className="header">
                 <h2>Equipment List <span className='textAccent'>{allUsers?.meta?.total}</span></h2>
                 <button onClick={() => { setShowForm(true); setFormData([{ code: '', type: 'WALKIE_TALKIE', size: undefined }]);}}>Add Equipment</button>

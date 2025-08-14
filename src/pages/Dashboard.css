@@ -89,3 +89,42 @@ header {
         object-fit: cover;
     }
 }
+
+
+main {
+    position: relative;
+    /* overflow: hidden; */
+    border-radius: 0 1.2rem 1.2rem 0;
+}
+.mainContainer {
+    height: 100%;
+    width: 100%;
+}
+.mainContainer {
+    transition: 0ms;
+    filter: blur(500px);
+    position: relative;
+}
+main:has(.show) {
+    & .mainContainer {
+        transition: 300ms 200ms;
+        filter: blur(0);
+    }
+    & .loader {
+        opacity: 0;
+        transform: scale(10%);
+        transition: 250ms;
+    }
+}
+
+
+.loader {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 300ms;
+}
