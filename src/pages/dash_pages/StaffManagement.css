@@ -2,9 +2,11 @@
     padding: 3.4rem 6rem 1rem 6rem;
 
     & .header {
+        /* background-color: red; */
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+        height: 1.7rem;
         
         & button {
             transform: translate(0, -0.5rem);
@@ -17,72 +19,16 @@
 
 }
 
-.dash_page.staffManagement .contentContainer {
-    display: grid;
-    grid-template-columns: 32rem 1fr;
-    gap: 4rem;
-}
-
-.dash_page.staffManagement .selectedUserContainer {
-    background-color: white;
-    border: 2px solid rgb(from #484848 r g b / 0.1);
-    margin-top: 3rem;
-    border-radius: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    & p {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--textAlt);
-
-        &.username {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-    }
-}
 
 .dash_page.staffManagement .staffListContainer {
-    background-color: white;
-    width: min(100%, 50rem);
-    height: calc(100vh - 13.5rem);
-    /* border-radius: 2rem; */
-    margin-top: 3rem;
-    /* padding: 2rem; */
-    overflow-y: auto;
-
-
-    & ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        /* gap: 0.75rem; */
-        margin-right: 1.5rem;
-        margin-top: 0.5rem;
-    }
-
-    & li {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding-block: 1.2rem;
-        padding-right: 1rem;
-        /* border-radius: 1.5rem; */
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        /* border: 1px solid rgba(0, 0, 0, 0.07); */
-        border-top: 1px solid rgb(from #484848 r g b / 0.06);
-        cursor: pointer;
-
-
-        & img {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            object-fit: cover;
+    ul li {
+        &.selected {
+            background-color: rgb(from var(--accent) r g b / 1);
+            color: white;
+            pointer-events: none;
+        }
+        & img.selected {
+            border: 3px solid white;
         }
     }
 
@@ -258,20 +204,57 @@ form.addUsersForm {
 
 .tabHead.active {
     color: var(--accent) !important;
+    /* text-shadow: 0 0 3rem white; */
+    font-weight: 700 !important;
 }
 .tabHead {
+    z-index: 9999;
+    color: var(--textAlt);
+    /* text-shadow: 0 0 3rem white; */
     cursor: pointer;
 }
 
+.tabHead:has( + .active) {
+    color: rgba(255,255,255,0.8);
+}
+
 .historyMap {
-    height: calc(80% - 2.5rem);
-    width: calc(100% - 4rem);
-    margin-top: 1.5rem;
+    height: 100%;
+    width: 100%;
+    /* margin-top: 2rem; */
+    top: 0;
     left: 0;
     right: 0;
     margin-inline: auto;
     overflow: hidden;
     border-radius: 1rem;
+    position: absolute;
+}
+
+.historyMap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15rem;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9)0%, rgba(0, 0, 0, 0.8) 16%, rgba(0, 0, 0, 0.7) 28%, rgba(0, 0, 0, 0) 100%);
+    z-index: 999;
+    pointer-events: none;
+    /* backdrop-filter: blur(12px); */
+}
+
+
+.historyMap::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 8rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 20%, rgba(0, 0, 0, 0) 100%);
+    z-index: 9990;
+    pointer-events: none;
 }
 
 .attendanceList {
@@ -319,16 +302,16 @@ form.addUsersForm {
         width: 100%;
         /* background-color: red; */
 
-        & .header {
+        & .selectedHeader {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 2rem;
-            margin-top: 0.5rem;
+            margin-top: 2rem;
         }
 
         & li {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: transparent;
             padding-block: 1.2rem;
             padding-right: 1rem;
             display: flex;
@@ -368,7 +351,7 @@ form.addUsersForm {
     .attendanceItem {
 
     & li.profileAttendance {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: transparent;
         padding-block: 1.2rem;
         padding-right: 1rem;
         /* border-radius: 1.5rem; */
@@ -399,4 +382,93 @@ form.addUsersForm {
         }
 
     }
+}
+
+.selectedUserContainer {
+    overflow: hidden;
+    position: relative;
+    
+}
+
+.tinyLoader {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    /* background-color: red; */
+
+    /* border: 1px solid rgb(from #484848 r g b / 0.1); */
+    border-radius: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--lightGray);
+    opacity: 0;
+    pointer-events: none;
+    transition: 300ms 200ms;
+    & > svg {
+        transition: 300ms;
+        transform: scale(100%);
+        opacity: 0;
+    }
+}
+
+.tinyLoader.visible,
+.tinyLoader.softReload {
+    pointer-events: all;
+    transition: 0ms;
+    opacity: 1;
+    & > svg {
+        transition: 0ms;
+        transform: scale(100%);
+        opacity: 1;
+    }
+}
+
+li.lock {
+    pointer-events: none;
+}
+
+p.date {
+    position: absolute;
+    color: white;
+    z-index: 9999;
+    top: 1.5rem;
+    font-size: 0.75rem !important;
+    opacity: 0.75;
+}
+.datePicker {
+    position: absolute;
+    color: white;
+    z-index: 9999;
+    right: 4rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 1;
+    & > svg {
+        cursor: pointer;
+    }
+}
+
+.tinyLoader.softReload {
+    background-color: rgba(0, 0, 0, 0.5);
+    & svg {
+        color: white!important;
+    }
+}
+
+.dateInput {
+    z-index: 9999;
+    height: 2rem;
+    width: 10rem;
+    position: absolute;
+    right: 6rem;
+    color: transparent;
+    background-color: transparent;
+    /* display: none; */
+    visibility: hidden;
 }

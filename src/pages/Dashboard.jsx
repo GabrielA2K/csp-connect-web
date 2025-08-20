@@ -97,7 +97,7 @@ const Dashboard = () => {
                     })()}
                 </div>
                 <div className="loader">
-                    <Icon icon="svg-spinners:gooey-balls-2" width={150} color="#007AFF" />
+                    <Icon icon="svg-spinners:gooey-balls-2" width={150} color="var(--accent)" />
                 </div>
             </main>
             

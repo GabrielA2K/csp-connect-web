@@ -81,8 +81,9 @@ const FoodVoucher = () => {
                                 </div>
                                 {
                                     <div className={"tag qrLink "+qrLinks[user._id]?.type}>
-                                        <Icon icon={qrLinks[user._id]?.type === 'unclaimed' ? 'mingcute:ticket-line' : (qrLinks[user._id]?.type === 'claimed' ? 'mingcute:intersect-line' : (qrLinks[user._id]?.type === 'unavailable' ? 'mingcute:warning-line' : (qrLinks[user._id]?.type === 'done' ? 'mingcute:checks-line' : '')))} width={18} />
-                                        <p>{qrLinks[user._id]?.type === 'unclaimed' ? 'Unclaimed' : (qrLinks[user._id]?.type === 'claimed' ? 'Claimed' : (qrLinks[user._id]?.type === 'unavailable' ? 'Unavailable' : (qrLinks[user._id]?.type === 'done' ? 'Done' : '')))}</p>
+                                        
+                                        <p>{qrLinks[user._id]?.type === 'unclaimed' ? 'Not Redeemed' : (qrLinks[user._id]?.type === 'claimed' ? 'Redeemed' : (qrLinks[user._id]?.type === 'unavailable' ? 'Unavailable' : (qrLinks[user._id]?.type === 'done' ? 'Done' : '')))}</p>
+                                        <Icon icon="mingcute:ticket-fill" width={18} />
                                     </div>
                                     // (qrLinks[user._id] && qrLinks[user._id].type === 'in') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink'>QR Sign In</a> : (qrLinks[user._id] && qrLinks[user._id].type === 'out') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink out'>QR Sign Out</a> : <p className="qrLink"></p>
                                 }

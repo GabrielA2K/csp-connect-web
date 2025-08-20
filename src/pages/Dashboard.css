@@ -8,7 +8,7 @@
     margin-left: 0.5rem;
     border-radius: 1.2rem;
 }
-.page.dashboard.full {
+.page.dashboard {
     min-height: 100vh;
     min-width: 100vw;
     margin: 0;
@@ -102,7 +102,7 @@ main {
 }
 .mainContainer {
     transition: 0ms;
-    filter: blur(500px);
+    /* filter: blur(50px); */
     position: relative;
 }
 main:has(.show) {
@@ -113,8 +113,29 @@ main:has(.show) {
     & .loader {
         opacity: 0;
         transform: scale(10%);
-        transition: 250ms;
+        transition: 250ms 200ms;
+        pointer-events: none;
     }
+    & .mainContainer::after {
+        opacity: 0;
+        transition: 300ms 400ms;
+    }
+
+}
+.mainContainer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    opacity: 1;
+    /* z-index: 100; */
+    border-radius: 0 1.2rem 1.2rem 0;
+    pointer-events: none;
 }
 
 
@@ -127,4 +148,45 @@ main:has(.show) {
     justify-content: center;
     align-items: center;
     transition: 300ms;
+    pointer-events: all;
+}
+
+
+.datePickerSheet {
+    height: 28rem;
+    width: 16rem;
+    background-color: white;
+    border-radius: 1.2rem;
+    z-index: 9999;
+    position: absolute;
+    right: 4rem;
+    top: 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 4rem;
+    overflow: hidden;
+}
+.datePickerSheet > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 0.5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* gap: 0.5rem; */
+}
+.datePickerSheet > div > div {
+    /* border: 1px solid var(--dividerColor); */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-block: 1rem;
+    user-select: none;
+}
+.yearItem:nth-child(4) {
+    background-color: var(--accent);
+    color: white;
+}
+
+.month {
+    background-color: var(--lighterGray);
 }

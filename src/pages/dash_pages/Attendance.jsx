@@ -14,7 +14,7 @@ const Attendance = () => {
                 setLoad(false);
                 const response = await getAllUsers();
                 setAllUsers(response.data)
-                // console.log(allUsers);
+                console.log(response.data);
             } catch (error) {
                 console.error("Error fetching users:", error);
             } finally {
@@ -33,27 +33,27 @@ const Attendance = () => {
         if (allUsers?.data) {
             allUsers.data.forEach(user => {
             const userData = { user: user._id };
-                setLoad(false);
+                
             getAttendanceQR(userData)
                 .then(response => {
-                    setLoad(true);
+                    
                 setQrLinks(prev => ({
                     ...prev,
-                    [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&dark=282828&ecLevel=L&size=200&format=svg`, type: 'in' }
+                    [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&light=f5f5f900&dark=282828&ecLevel=L&size=200&format=svg`, type: 'in' }
                 }));
                 })
                 .catch(error => {
-                    setLoad(false);
+                    
                     getAttendanceOutQR(userData)
                     .then(response => {
-                        setLoad(true);
+                        
                     setQrLinks(prev => ({
                         ...prev,
-                        [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&dark=282828&ecLevel=L&size=200&format=svg`, type: 'out' }
+                        [user._id]: { qr: `https://quickchart.io/qr?text=${JSON.stringify(response.data)}&light=f5f5f900&dark=282828&ecLevel=L&size=200&format=svg`, type: 'out' }
                     }));
                     })
                     .catch (error => {
-                        setLoad(true);
+                        
                         setQrLinks(prev => ({
                             ...prev,
                             [user._id]: { qr: null, type: (error.response.data.message === 'User has equipments that are not logged out') ? 'pendingOut' : ((error.response.data.message === 'User did not timed in') ? 'done' : null) }
@@ -92,9 +92,9 @@ const Attendance = () => {
                                 <p className="username">@{user.username}</p>
                                 </div>
                                 {
-                                    <div className={"tag qrLink "+qrLinks[user._id]?.type}>
-                                        <Icon icon={qrLinks[user._id]?.type === 'in' ? 'mingcute:user-remove-2-line' : (qrLinks[user._id]?.type === 'out' ? 'mingcute:exit-line' : (qrLinks[user._id]?.type === 'pendingOut' ? 'mingcute:briefcase-2-line' : (qrLinks[user._id]?.type === 'done' ? 'mingcute:checks-line' : '')))} width={18} />
-                                        <p>{qrLinks[user._id]?.type === 'in' ? 'Not Signed In' : (qrLinks[user._id]?.type === 'out' ? 'Ready for Sign Out' : (qrLinks[user._id]?.type === 'pendingOut' ? 'Equipment' : (qrLinks[user._id]?.type === 'done' ? 'Signed Out' : '')))}</p>
+                                    <div className={"tag qrLink "+user?.attendance_status}>
+                                        <p>{user?.attendance_status === 'NOT_IN' ? 'Not Signed In' : (user?.attendance_status === 'IN' ? 'On Duty' : (user?.attendance_status === 'OUT' ? 'Shift Ended' : (user?.attendance_status === 'done' ? 'Signed Out' : '')))}</p>
+                                        <Icon icon="material-symbols:circle" width={10} />
                                     </div>
                                     // (qrLinks[user._id] && qrLinks[user._id].type === 'in') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink'>QR Sign In</a> : (qrLinks[user._id] && qrLinks[user._id].type === 'out') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink out'>QR Sign Out</a> : <p className="qrLink"></p>
                                 }

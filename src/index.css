@@ -4,12 +4,15 @@
   padding: 0;
 
   --blue: #007AFF;
+  /* --blue: #305BE9; */
   --orange: #FF9500;
   --pink: #FF2D55;
   --red: #FF3B30;
+  --green: #34C759;
   --darkGray: #282828;
   --gray: #484848;
   --lightGray: #F2F2F8;
+  --lighterGray: rgb(from var(--lightGray) r g b / 0.4);
 
   --primary: var(--blue);
   --secondary: var(--orange);

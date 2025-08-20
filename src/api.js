@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://checkins-api.onrender.com/api/v1', // Base URL of your backend
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 API.interceptors.request.use((config) => {

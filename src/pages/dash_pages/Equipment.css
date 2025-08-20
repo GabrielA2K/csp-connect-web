@@ -17,80 +17,26 @@
 
 }
 
-.dash_page.staffManagement .contentContainer {
-    display: grid;
-    grid-template-columns: 32rem 1fr;
-    gap: 4rem;
-}
-
-.dash_page.staffManagement .selectedUserContainer {
-    background-color: white;
-    border: 2px solid rgb(from #484848 r g b / 0.1);
-    margin-top: 3rem;
-    border-radius: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    & p {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: var(--textAlt);
-
-        &.username {
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-    }
+/* .dash_page.staffManagement .selectedUserContainer {
     & img {
         width: 20rem;
         height: 20rem;
         object-fit: cover;
         margin-top: 1rem;
     }
-}
+} */
 
 .dash_page.staffManagement .staffListContainer {
-    background-color: white;
-    width: min(100%, 50rem);
-    height: calc(100vh - 13.5rem);
-    /* border-radius: 2rem; */
-    margin-top: 3rem;
-    /* padding: 2rem; */
-    overflow-y: auto;
-
-
-    & ul {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        /* gap: 0.75rem; */
-        margin-right: 1.5rem;
-        margin-top: 0.5rem;
-    }
-
+/*     
     & li {
-        background-color: rgba(255, 255, 255, 0.9);
-        padding-block: 1.2rem;
-        padding-right: 1rem;
-        /* border-radius: 1.5rem; */
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        /* border: 1px solid rgba(0, 0, 0, 0.07); */
-        border-top: 1px solid rgb(from #484848 r g b / 0.06);
-        cursor: pointer;
-
-
+        
         & img {
             width: 3.2rem;
             height: 3.2rem;
             border-radius: 50%;
             object-fit: cover;
         }
-    }
+    } */
 
     & .profileInformation {
         display: flex;
@@ -262,23 +208,6 @@ form.addUsersForm {
 }
 
 
-.tabHead.active {
-    color: var(--accent) !important;
-}
-.tabHead {
-    cursor: pointer;
-}
-
-.historyMap {
-    height: calc(80% - 2.5rem);
-    width: calc(100% - 4rem);
-    margin-top: 1.5rem;
-    left: 0;
-    right: 0;
-    margin-inline: auto;
-    overflow: hidden;
-    border-radius: 1rem;
-}
 
 .attendanceList {
     height: calc(80% - 2.5rem);
@@ -325,16 +254,8 @@ form.addUsersForm {
         width: 100%;
         /* background-color: red; */
 
-        & .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 2rem;
-            margin-top: 0.5rem;
-        }
-
         & li {
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: transparent;
             padding-block: 1.2rem;
             padding-right: 1rem;
             display: flex;
@@ -374,7 +295,7 @@ form.addUsersForm {
     .attendanceItem {
 
     & li.profileAttendance {
-        background-color: rgba(255, 255, 255, 0.9);
+        
         padding-block: 1.2rem;
         padding-right: 1rem;
         /* border-radius: 1.5rem; */
