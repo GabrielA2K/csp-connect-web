@@ -91,7 +91,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
             />
-            <button className='submit' type="submit">{loading ? <Icon icon="eos-icons:three-dots-loading" width={48} /> : 'Login'}</button>
+            <button className='submit login' type="submit">{loading ? <Icon icon="eos-icons:three-dots-loading" width={48} /> : 'Login'}</button>
         </form>
         
       </div>

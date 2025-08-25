@@ -47,3 +47,9 @@ export const getUserAttendanceHistory = (params) => API.get(`user/${params.user}
 export const deleteAllUsers = () => API.delete('/user/staffs');
 
 export const deleteEquipmentLogs = () => API.delete('/internal/equipment-logs');
+
+
+
+export const getAttendanceData = (date) => API.get(`/attendance?date=${date}`);
+export const exportAttendance = (date) => API.get(`/attendance/export?date=${date}`, { responseType: "blob" });
+export const exportLocation = (data) => API.get(`/location/${data.user}/export?date=${data.date}`, { responseType: "blob" });

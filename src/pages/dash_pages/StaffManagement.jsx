@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { getAllUsers, batchRegisterUsers, getUserLocationHistory, getUserAttendanceHistory } from '../../api.js';
+import { getAllUsers, batchRegisterUsers, getUserLocationHistory, getUserAttendanceHistory, exportLocation } from '../../api.js';
 import { MapContainer, TileLayer, useMap, Marker, Popup, Polyline } from 'react-leaflet'
 import L from 'leaflet';
 import './StaffManagement.css';
@@ -18,7 +18,9 @@ function MapMover({ center, zoom }) {
   const map = useMap();
 
   useEffect(() => {
-    map.flyTo(center, zoom, { duration: 1.5 });
+    if (zoom?.animated) {
+        map.flyTo(center, zoom.level, { duration: 1.5 });
+    }
   }, [center, zoom, map]);
 
   return null;
@@ -26,6 +28,7 @@ function MapMover({ center, zoom }) {
 
 const StaffManagement = () => {
     const [loaded, setLoad] = useState(false);
+    const [downloading, setDownloading] = useState(false);
     const [tinyLoaderVisible, setTinyLoaderVisible] = useState(false);
     const [softReload, setSoftReload] = useState(false);
     const [allUsers, setAllUsers] = useState(null)
@@ -167,9 +170,9 @@ const StaffManagement = () => {
             // setHistoryTab('attendance');
             const response = await getUserLocationHistory({ user: userId, date: dateChosen });
             setSelectedUserLocationHistory(response.data);
-            console.log(response.data);
+            console.log('COORDINATES', response.data);
             (response.data.length > 0) && setCoords([response.data[0]?.location?.coordinates[1], response.data[0]?.location?.coordinates[0]]);
-            setZoom(13);
+            setZoom({level: 13, animated: true});
 
             coordinates = response.data.map(item => {
                 const [lng, lat] = item.location.coordinates;
@@ -197,7 +200,30 @@ const StaffManagement = () => {
             const response = await getUserLocationHistory({ user: userId, date });
             setSelectedUserLocationHistory(response.data);
             (response.data.length > 0) && setCoords([response.data[0]?.location?.coordinates[1], response.data[0]?.location?.coordinates[0]]);
-            setZoom(13);
+            setZoom({level: 13, animated: true});
+
+            coordinates = response.data.map(item => {
+                const [lng, lat] = item.location.coordinates;
+                return [lat, lng]; // Swap positions
+            });
+            handleShowPolyline(coordinates);
+            
+        } catch (error) {
+            // setLoading(false);
+            console.error(error);
+
+        } finally {
+            setSoftReload(false);
+            // setLoading(false);
+        }
+    }
+    const handleRefetchCoords = async (userId, date) => {
+        setSoftReload(true);
+        try {
+            const response = await getUserLocationHistory({ user: userId, date });
+            setSelectedUserLocationHistory(response.data);
+            (response.data.length > 0) && setCoords([response.data[0]?.location?.coordinates[1], response.data[0]?.location?.coordinates[0]]);
+            setZoom({level: 13, animated: false});
 
             coordinates = response.data.map(item => {
                 const [lng, lat] = item.location.coordinates;
@@ -215,12 +241,8 @@ const StaffManagement = () => {
         }
     }
 
-        useEffect(() => {
-        // console.log("Form Data:", formData);
-        // console.log(JSON.stringify(formData))
-        // console.log(anyInputExist)
+    useEffect(() => {
         setHasDuplicates(hasDuplicateUsernames(formData));
-        
     }, [formData]);
 
     const isDuplicateUsername = (username, index) => {
@@ -249,7 +271,7 @@ const StaffManagement = () => {
 
     
     const [coords, setCoords] = useState([15.2183658, 120.6601309]);
-    const [zoom, setZoom] = useState(13);
+    const [zoom, setZoom] = useState({level:13,animated:true});
 
     const [polylineCoords, setPolylineCoords] = useState([]);
 
@@ -265,10 +287,38 @@ const StaffManagement = () => {
     const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
     
 
+    const downloadFile = async () => {
+        try {
+            setDownloading(true);
+            const response = await exportLocation({ user: selectedUser._id, date: dateChosen });
+
+            // Create a blob link to download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+
+            // You can hardcode a filename OR extract from response headers
+            link.setAttribute("download", `CSP-LocationHistory_${dateChosen}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+
+            // Cleanup
+            link.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error downloading file:", error);
+        } finally {
+            setDownloading(false);
+        }
+    };
 
     useEffect(() => {
         console.log("Selected date:", dateChosen);
     }, [dateChosen]);
+
+    useEffect(() => {
+        console.log("POLYLINES:", polylineCoords);
+    }, [polylineCoords]);
 
     return (
         <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
@@ -329,41 +379,17 @@ const StaffManagement = () => {
                             <div className="selectedHeader">
                                 <p className={'tabHead'+(historyTab === 'attendance' ? ' active' : '')} onClick={() => setHistoryTab('attendance')}>Attendance History</p>
                                 <p className={'tabHead'+(historyTab === 'location' ? ' active' : '')} onClick={() => setHistoryTab('location')}>Location History</p>
-                                <div className="datePicker">
-                                    <Icon icon="mingcute:calendar-line" width={24} onClick={() => document.getElementById('locationDatePicker').showPicker()} />
-                                    <Icon icon="mingcute:refresh-3-line" width={24} onClick={() => handleRefetchLocationHistory(selectedUser?._id, dateChosen)} />
-                                </div>
-                                <p className="date">{getFormattedDate(dateChosen)}</p>
-                                {/* <div className="datePickerSheet">
-                                    <div className="year">
-                                        {
-                                            years.map(year => (
-                                                <div className="yearItem" key={year}>
-                                                    {year}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="month">
-                                        {
-                                            months.map(month => (
-                                                <div className="monthItem" key={month}>
-                                                    {month}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <div className="day">
-                                        {
-                                            days.map(day => (
-                                                <div className="dayItem" key={day}>
-                                                    {day}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                </div> */}
-                                <input className='dateInput' type="date" id='locationDatePicker' max={getToday()} value={dateChosen} onChange={(e) => {e.target.value === "" ? setDateChosen(getToday()) : setDateChosen(e.target.value); handleRefetchLocationHistory(selectedUser?._id, e.target.value); }} />
+                                {(historyTab === 'location') && (
+                                    <>
+                                        <div className="datePicker">
+                                            {(polylineCoords.length > 0) && (!downloading && <Icon icon="mingcute:download-line" width={24} onClick={downloadFile} /> || <Icon icon="svg-spinners:180-ring" width={24} />) || null}
+                                            <Icon icon="mingcute:calendar-line" width={24} onClick={() => document.getElementById('locationDatePicker').showPicker()} />
+                                            <Icon icon="mingcute:refresh-3-line" width={24} onClick={() => handleRefetchCoords(selectedUser?._id, dateChosen)} />
+                                        </div>
+                                        <p className="date">{getFormattedDate(dateChosen)}</p>
+                                        <input className='dateInput' type="date" id='locationDatePicker' max={getToday()} value={dateChosen} onChange={(e) => {e.target.value === "" ? setDateChosen(getToday()) : setDateChosen(e.target.value); handleRefetchLocationHistory(selectedUser?._id, e.target.value); }} />
+                                    </>
+                                )}
                             </div>
                             {historyTab === 'attendance' && (
                                 <div className="attendanceList">
@@ -409,7 +435,7 @@ const StaffManagement = () => {
                             )}
                             {historyTab === 'location' && (
                                 <div className="historyMap">
-                                    <MapContainer center={[15.2183658, 120.6601309]} zoom={zoom} scrollWheelZoom={true}>
+                                    <MapContainer center={coords} zoom={zoom.level} scrollWheelZoom={true}>
                                         <TileLayer
                                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -3,8 +3,8 @@
   margin: 0;
   padding: 0;
 
-  --blue: #007AFF;
-  /* --blue: #305BE9; */
+  /* --blue: #007AFF; */
+  --blue: #305BE9;
   --orange: #FF9500;
   --pink: #FF2D55;
   --red: #FF3B30;
@@ -107,3 +107,8 @@ button {
 @media (prefers-color-scheme: light) {
   
 }
+
+/* .leaflet-control-zoom-in {
+  background-color: red!important;
+  display: none!important;
+} */

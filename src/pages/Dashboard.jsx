@@ -6,6 +6,7 @@ import Attendance from "./dash_pages/Attendance.jsx";
 import StaffManagement from "./dash_pages/StaffManagement.jsx";
 import FoodVoucher from "./dash_pages/FoodVoucher.jsx";
 import Equipment from "./dash_pages/Equipment.jsx";
+import AttendanceSheet from "./dash_pages/AttendanceSheet.jsx";
 
 import CSP from '../assets/csp.svg';
 
@@ -61,6 +62,10 @@ const Dashboard = () => {
                         <Icon icon="mingcute:list-check-3-line" width={28}/>
                         Staff Attendance
                     </li>
+                    <li className={activeTab === 'attendanceSheet' ? 'active' : ''} onClick={() => {setActiveTab('attendanceSheet'); localStorage.setItem('dashTab', 'attendanceSheet');}}>
+                        <Icon icon="mingcute:table-2-line" width={28}/>
+                        Attendance Sheet
+                    </li>
                     <li className={activeTab === 'foodVoucher' ? 'active' : ''} onClick={() => {setActiveTab('foodVoucher'); localStorage.setItem('dashTab', 'foodVoucher');}}>
                         <Icon icon="mingcute:ticket-line" width={28}/>
                         Food Vouchers
@@ -93,6 +98,8 @@ const Dashboard = () => {
                                 return <FoodVoucher />;
                             case 'equipments':
                                 return <Equipment />;
+                            case 'attendanceSheet':
+                                return <AttendanceSheet />;
                         }
                     })()}
                 </div>

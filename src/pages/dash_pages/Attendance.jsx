@@ -23,6 +23,7 @@ const Attendance = () => {
         };
         fetchUsers();
     }, []);
+    
     const [qrLinks, setQrLinks] = useState({});
 
     useEffect(() => {

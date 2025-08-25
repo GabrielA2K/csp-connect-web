@@ -95,3 +95,7 @@ header img.logo {
     width: 3rem;
     height: 3rem;
 }
+
+button {
+    color-scheme: dark;
+}
