@@ -432,7 +432,7 @@ const StaffManagement = () => {
                                                                 <p className="sign_">
                                                                     {equipment.code}
                                                                 </p>
-                                                                <p className="time_">{equipment.check_out ? `Returned at ${format(new Date(equipment.check_out), "h:mm a")}` : 'Item Not Returned the Same Day'}</p>
+                                                                <p className="time_">{equipment.check_out ? `Returned at ${format(new Date(equipment.check_out), "h:mm a")}` : 'Not Returned'}</p>
                                                                 </div>
                                                                 
                                                             </li>

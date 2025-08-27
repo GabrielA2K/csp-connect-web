@@ -411,12 +411,15 @@ form.addUsersForm {
             font-weight: 600;
             opacity: 0.75;
         }
+        
     }
 }
+
 
 .attendanceDayGroup {
     border: 1px solid rgb(from #484848 r g b / 0.06);
     padding-inline: 1.5rem;
+    padding-bottom: 1.5rem;
     border-radius: 1.2rem;
     margin-right: 1rem;
     background-color: white;

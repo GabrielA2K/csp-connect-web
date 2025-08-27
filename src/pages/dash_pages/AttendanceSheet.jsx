@@ -123,8 +123,8 @@ const AttendanceSheet = () => {
                                             <td rowSpan={data.user.equipments?.length+1 || 1}>{data.user.username}</td>
                                             <td rowSpan={data.user.equipments?.length+1 || 1}>{data.user.profile.first_name}</td>
                                             <td rowSpan={data.user.equipments?.length+1 || 1}>{data.user.profile.last_name}</td>
-                                            <td rowSpan={data.user.equipments?.length+1 || 1}>{format(new Date(data.time_in), 'hh:mm a')}</td>
-                                            <td rowSpan={data.user.equipments?.length+1 || 1}>{format(new Date(data.time_out), 'hh:mm a')}</td>
+                                            <td rowSpan={data.user.equipments?.length+1 || 1}>{data.time_in && format(new Date(data.time_in), 'hh:mm a')}</td>
+                                            <td rowSpan={data.user.equipments?.length+1 || 1}>{data.time_out && format(new Date(data.time_out), 'hh:mm a')}</td>
                                             <td rowSpan={data.user.equipments?.length+1 || 1}>{data.user.is_food_taken ? "Claimed" : "Unclaimed"}</td>
 
                                             
@@ -135,8 +135,8 @@ const AttendanceSheet = () => {
                                                 <td>{item.code}</td>
                                                 <td>{(item.type === 'UNIFORM' ? 'Uniform' : (item.type === 'WALKIE_TALKIE' ? 'Walkie Talkie' : (item.type === "BAG" ? "Bag" : item.type)))}</td>
                                                 <td>{(item.size === 'SMALL' ? 'S' : (item.size === 'MEDIUM' ? 'M' : (item.size === 'LARGE' ? 'L' : (item.size === 'EXTRA_LARGE' ? 'XL' : item.size))))}</td>
-                                                <td>{format(new Date(item.check_in), 'hh:mm a')}</td>
-                                                <td>{format(new Date(item.check_out), 'hh:mm a')}</td>
+                                                <td>{item.check_in && format(new Date(item?.check_in), 'hh:mm a')}</td>
+                                                <td>{item.check_out && format(new Date(item?.check_out), 'hh:mm a')}</td>
                                             </tr>
                                         ))}
                                         
