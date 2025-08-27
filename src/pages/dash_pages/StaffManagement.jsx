@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { getAllUsers, batchRegisterUsers, getUserLocationHistory, getUserAttendanceHistory, exportLocation } from '../../api.js';
 import { MapContainer, TileLayer, useMap, Marker, Popup, Polyline } from 'react-leaflet'
+import { format } from 'date-fns'
 import L from 'leaflet';
 import './StaffManagement.css';
 import 'leaflet/dist/leaflet.css';
@@ -9,6 +10,9 @@ import 'leaflet/dist/leaflet.css';
 import MapMarkerIcon from '../../assets/map-marker.png';
 import CheckBlue from '../../assets/check-blue.svg'
 import ExitOrange from '../../assets/exit-orange.svg'
+import Mobile from '../../assets/mobile-blue.svg'
+import Bag from '../../assets/bag-pink.svg'
+import Uniform from '../../assets/uniform-orange.svg'
 
 import MapStart from '../../assets/map-start.svg';
 import MapEnd from '../../assets/map-end.svg';
@@ -396,6 +400,9 @@ const StaffManagement = () => {
                                     {
                                         selectedUserAttendanceHistory?.data.map((attendance, index) => (
                                             <div className="attendanceDayGroup" key={index}>
+                                                <p className="attendanceDate">
+                                                    {format(new Date(attendance?.time_in), "dd MMM yyyy")}
+                                                </p>
                                                 {attendance?.time_in && 
                                                 <div className="attendanceItem">
                                                     <li className='profileAttendance'>
@@ -407,11 +414,32 @@ const StaffManagement = () => {
                                                         <p className="sign_">
                                                             Signed In
                                                         </p>
-                                                        <p className="time_">{new Date(attendance?.time_in).toLocaleString()}</p>
+                                                        <p className="time_">{format(new Date(attendance?.time_in), "h:mm a")}</p>
                                                         </div>
                                                         
                                                     </li>
                                                 </div>}
+
+                                                {
+                                                    attendance?.user?.equipments?.map((equipment, index) => (
+                                                        <div className="attendanceItem">
+                                                            <li className='profileAttendance equipment'>
+                                                                <img className='profileAttendance'
+                                                                src={equipment.type === 'WALKIE_TALKIE' ? Mobile : equipment.type === 'BAG' ? Bag : Uniform}
+                                                                alt=""
+                                                                />
+                                                                <div className="profileInformation">
+                                                                <p className="sign_">
+                                                                    {equipment.code}
+                                                                </p>
+                                                                <p className="time_">{equipment.check_out ? `Returned at ${format(new Date(equipment.check_out), "h:mm a")}` : 'Item Not Returned the Same Day'}</p>
+                                                                </div>
+                                                                
+                                                            </li>
+                                                        </div>
+                                                    ))
+                                                }
+
                                                 {attendance?.time_out && 
                                                 <div className="attendanceItem">
                                                     <li className='profileAttendance'>
@@ -423,7 +451,7 @@ const StaffManagement = () => {
                                                         <p className="sign_">
                                                             Signed Out
                                                         </p>
-                                                        <p className="time_">{new Date(attendance?.time_out).toLocaleString()}</p>
+                                                        <p className="time_">{format(new Date(attendance?.time_out), "h:mm a")}</p>
                                                         </div>
                                                         
                                                     </li>

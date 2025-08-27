@@ -259,13 +259,16 @@ form.addUsersForm {
 
 .attendanceList {
     height: 82%;
-    width: calc(100% - 8rem);
+    width: calc(100% - 5rem);
     margin-top: 1.5rem;
     left: 0;
     right: 0;
     margin-inline: auto;
     overflow: auto;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     /* background-color: red; */
 }
 
@@ -360,7 +363,6 @@ form.addUsersForm {
         align-items: center;
         justify-content: flex-start;
         /* border: 1px solid rgba(0, 0, 0, 0.07); */
-        border-top: 1px solid rgb(from #484848 r g b / 0.06);
         cursor: pointer;
 
 
@@ -369,6 +371,7 @@ form.addUsersForm {
             height: 3rem;
             border-radius: 50%;
             object-fit: cover;
+            margin: 0;
         }
         & .sign_ {
             font-size: 1.15rem;
@@ -381,6 +384,50 @@ form.addUsersForm {
             opacity: 0.75;
         }
 
+    }
+
+    & li.profileAttendance.equipment {
+        /* background-color: red; */
+        margin-left: 1.5rem;
+        padding-left: 1.5rem;
+        border: none;
+        border-left: 4px solid var(--lightGray);
+        padding-block: 0.5rem;
+
+        & img.profileAttendance {
+            width: 2.4rem;
+            height: 2.4rem;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0;
+        }
+        & .sign_ {
+            font-size: 1rem;
+            font-weight: 700 ;
+            color: var(--text);
+        }
+        & .time_ {
+            font-size: 0.80rem;
+            font-weight: 600;
+            opacity: 0.75;
+        }
+    }
+}
+
+.attendanceDayGroup {
+    border: 1px solid rgb(from #484848 r g b / 0.06);
+    padding-inline: 1.5rem;
+    border-radius: 1.2rem;
+    margin-right: 1rem;
+    background-color: white;
+
+    & > p.attendanceDate {
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-top: 1.5rem;
+        color: var(--textAlt);
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgb(from #484848 r g b / 0.06);
     }
 }
 
