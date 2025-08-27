@@ -258,7 +258,7 @@ form.addUsersForm {
 }
 
 .attendanceList {
-    height: calc(80% - 2.5rem);
+    height: 82%;
     width: calc(100% - 8rem);
     margin-top: 1.5rem;
     left: 0;
@@ -387,6 +387,7 @@ form.addUsersForm {
 .selectedUserContainer {
     overflow: hidden;
     position: relative;
+    height: calc(100vh - 13.5rem);
     
 }
 

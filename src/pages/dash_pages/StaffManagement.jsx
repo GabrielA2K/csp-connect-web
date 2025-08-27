@@ -317,8 +317,8 @@ const StaffManagement = () => {
     }, [dateChosen]);
 
     useEffect(() => {
-        console.log("POLYLINES:", polylineCoords);
-    }, [polylineCoords]);
+        console.log("USER ATTENDANCE:", selectedUserAttendanceHistory);
+    }, [selectedUserAttendanceHistory]);
 
     return (
         <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
@@ -396,7 +396,7 @@ const StaffManagement = () => {
                                     {
                                         selectedUserAttendanceHistory?.data.map((attendance, index) => (
                                             <div className="attendanceDayGroup" key={index}>
-                                                {attendance.data?.time_in && 
+                                                {attendance?.time_in && 
                                                 <div className="attendanceItem">
                                                     <li className='profileAttendance'>
                                                         <img className='profileAttendance'
@@ -407,12 +407,12 @@ const StaffManagement = () => {
                                                         <p className="sign_">
                                                             Signed In
                                                         </p>
-                                                        <p className="time_">{new Date(attendance.data?.time_in).toLocaleString()}</p>
+                                                        <p className="time_">{new Date(attendance?.time_in).toLocaleString()}</p>
                                                         </div>
                                                         
                                                     </li>
                                                 </div>}
-                                                {attendance.data?.time_out && 
+                                                {attendance?.time_out && 
                                                 <div className="attendanceItem">
                                                     <li className='profileAttendance'>
                                                         <img className='profileAttendance'
@@ -423,7 +423,7 @@ const StaffManagement = () => {
                                                         <p className="sign_">
                                                             Signed Out
                                                         </p>
-                                                        <p className="time_">{new Date(attendance.data?.time_out).toLocaleString()}</p>
+                                                        <p className="time_">{new Date(attendance?.time_out).toLocaleString()}</p>
                                                         </div>
                                                         
                                                     </li>

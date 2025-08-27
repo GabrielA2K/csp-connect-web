@@ -42,7 +42,7 @@ export const getAttendanceOutQR = (data) => API.get(`/attendance/${data.user}/ou
 
 export const getUserLocationHistory = (params) => API.get(`/location/${params.user}?date=${params.date}`);
 
-export const getUserAttendanceHistory = (params) => API.get(`user/${params.user}/history?limit=100&page=1`);
+export const getUserAttendanceHistory = (params) => API.get(`/attendance/${params.user}/history?limit=100&page=1`);
 
 export const deleteAllUsers = () => API.delete('/user/staffs');
 

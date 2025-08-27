@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { login, getProfile } from '../api.js'
 import { useNavigate } from 'react-router-dom';
 import { Icon } from "@iconify/react";
-import './Login.css';
+import './LoginLegacy.css';
 
 import CSP from '../assets/csp.svg';
 
 import LoginArt from '../assets/login-art.svg';
 
-const Login = () => {
+const LoginLegacy = () => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -57,57 +57,46 @@ const Login = () => {
             navigate("/dashboard");
         }
     }, [navigate]);
-    const [showPassword, setShowPassword] = useState(false);
+
   return (
     <div className="page login">
-      <div className="loginElements">
-
-        <div className="form">
+      <div className="visualizer">
+        <img src={LoginArt} alt="" />
+      </div>
+      
+      <div className="divider"><div className="bar"></div></div>
+      
+      <div className="form">
         <header>
             <img className='logo' src={CSP} alt="CSP Logo" />
-            <h1 className='fontExtraBold'>CSP-Connect Admin</h1>
+            <h1 className='fontExtraBold'>CSP Connect</h1>
         </header>
         
         <form className='loginForm' onSubmit={handleLogin}>
-            <p className="fontExtraBold"><span className='textAccent'>Login.</span></p>
-            <p className='desc'>Provide your admin credentials</p>
-            <div className="inputContainer">
-                <Icon icon="mingcute:user-3-line" width={24} color='rgb(from var(--textAlt) r g b / 0.8)'/>
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                    autoComplete='off'
-                    required
-                />
-            </div>
-
-            <div className="inputContainer">
-                <Icon icon="mingcute:lock-line" width={24} color='rgb(from var(--textAlt) r g b / 0.8)'/>
-                <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
-                <Icon icon={showPassword ? "mingcute:eye-line" : "mingcute:eye-close-line"} width={24} className='iconButton' color='rgb(from var(--textAlt) r g b / 0.8)' onClick={() => setShowPassword(!showPassword)} />
-            </div>
-            
-            
+            <p className="fontExtraBold"><span className='textAccent'>Login.</span><br/><br /><span className='fontBold'>Provide your registered credentials</span></p>
+            <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
+                autoComplete='off'
+                required
+            />
+            <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+            />
             <button className='submit login' type="submit">{loading ? <Icon icon="eos-icons:three-dots-loading" width={48} /> : 'Login'}</button>
         </form>
         
       </div>
-      </div>
-      
-    
-      
     </div>
   );
 };
 
-export default Login;
+export default LoginLegacy;
