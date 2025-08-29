@@ -76,10 +76,13 @@ const AttendanceSheet = () => {
     return (
         <div className={"dash_page attendanceSheet" + (loaded ? " show" : "")}>
             <div className="header">
-                <h2>Attendance Sheet <span className='textAccent'></span></h2>
+                <div className="textGroup">
+                    <h2>Attendance Sheet</h2>
+                    <p className="subtitle">View attendance records for staff members.</p>
+                </div>
                 <div className="actionGroup">
                     <input type="date" name="" id="" value={dateChosen} onChange={(e) => setDateChosen(e.target.value)} max={getToday()} data-date-format="DD MMMM YYYY"/>
-                    <button className={'download'+(attendanceData?.data.length === 0 ? ' inactive' : '')} onClick={attendanceData?.data.length === 0 ? null : downloadFile} disabled={attendanceData?.data.length === 0 || downloading} title={attendanceData?.data.length === 0 ? "No data to export" : "Export Attendance Sheet"}>
+                    <button className={'withIcon download'+(attendanceData?.data.length === 0 ? ' inactive' : '')} onClick={attendanceData?.data.length === 0 ? null : downloadFile} disabled={attendanceData?.data.length === 0 || downloading} title={attendanceData?.data.length === 0 ? "No data to export" : "Export Attendance Sheet"}>
                         {downloading && (
                             <Icon icon="svg-spinners:180-ring" width={24} />
                         ) || (

@@ -1,6 +1,9 @@
 import { useState, useEffect, use } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { getAllUsers, batchRegisterUsers, batchAddEquipments, getAllEquipment } from '../../api.js';
+
+import ListItemAvatar from '../../components/ListItemAvatar.jsx';
+
 import './Equipment.css';
 
 import Mobile from '../../assets/mobile-blue.svg'
@@ -158,67 +161,27 @@ const Equipment = () => {
         <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
             <div className="header">
                 <h2>Equipment List <span className='textAccent'>{allUsers?.meta?.total}</span></h2>
-                <button onClick={() => { setShowForm(true); setFormData([{ code: '', type: 'WALKIE_TALKIE', size: undefined }]);}}>Add Equipment</button>
+                <button className='withIcon' onClick={() => { setShowForm(true); setFormData([{ code: '', type: 'WALKIE_TALKIE', size: undefined }]);}}><Icon icon='mingcute:classify-add-line' width={20} /> Add Equipment</button>
             </div>
             
             <div className="contentContainer">
                 <div className="staffListContainer">
-                    {/* <a href={link} target="_blank" rel="noopener noreferrer">Open QR Code</a> */}
                     <ul>
                         {allUsers?.data?.map(user => (
-                            <li key={user._id} onClick={() => {
-                                setSelectedUser(user);
-                                handleFetchLocationHistory(user._id);
-
-                            }}>
-                                <img
-                                src={(user.type === 'UNIFORM') ? Uniform : (user.type === 'WALKIE_TALKIE') ? Mobile : (user.type === 'BAG') ? Bag : CheckBlue}
-                                alt=""
-                                />
-                                <div className="profileInformation">
-                                <p className="fullName">
-                                    {(user.type === 'UNIFORM') ? 'Uniform ' : (user.type === 'WALKIE_TALKIE') ? 'Walkie Talkie' : (user.type === 'BAG') ? 'Bag' : user.type} 
-                                    {(user.size === 'SMALL') ? '(Small)' : (user.size === 'MEDIUM') ? '(Medium)' : (user.size === 'LARGE') ? '(Large)' : (user.size === 'EXTRA_LARGE') ? '(XL)' : (!user.size ? '' : '(' + user.size + ')')}
-                                </p>
-                                <p className="username">CODE: {user.code}</p>
-                                </div>
-                                
-                            </li>
+                            <ListItemAvatar
+                                id={user._id}
+                                className={(selectedUser?._id === user._id ? "selected" : "")}
+                                avatar={(user.type === 'UNIFORM') ? Uniform : (user.type === 'WALKIE_TALKIE') ? Mobile : (user.type === 'BAG') ? Bag : CheckBlue}
+                                largeText={((user.type === 'UNIFORM') ? 'Uniform ' : (user.type === 'WALKIE_TALKIE') ? 'Walkie Talkie' : (user.type === 'BAG') ? 'Bag' : user.type) + ((user.size === 'SMALL') ? '(Small)' : (user.size === 'MEDIUM') ? '(Medium)' : (user.size === 'LARGE') ? '(Large)' : (user.size === 'EXTRA_LARGE') ? '(XL)' : (!user.size ? '' : '(' + user.size + ')'))}
+                                smallText={user.code}
+                                onClick={() => {
+                                    setSelectedUser(user);
+                                }}
+                            />
                         ))}
                     </ul>
                 </div>
-                {/* <div className="selectedUserContainer">
-                    
-                    {!selectedUser && <p>Select an equipment.</p>}
-                    <br />
-                    {
-                        selectedUser &&
-                        <div className="userDetails">
-                            <div className="profile">
-                                <li>
-                                    <img className='profileImage'
-                                    src={selectedUser.profile?.display_picture || 'https://gpmgcm.ac.in/wp-content/uploads/2024/01/Default-Profile.jpg'}
-                                    alt=""
-                                    />
-                                    <div className="profileInformation">
-                                    <p className="fullName">
-                                        {selectedUser.profile?.first_name || 'No'} {selectedUser.profile?.last_name || 'Profile'}
-                                    </p>
-                                    <p className="username">@{selectedUser.username}</p>
-                                    </div>
-                                    
-                                </li>
-                            </div>
-                            <div className="header">
-                                <p className={'tabHead'+(historyTab === 'attendance' ? ' active' : '')} onClick={() => setHistoryTab('attendance')}>Attendance History</p>
-                                <p className={'tabHead'+(historyTab === 'location' ? ' active' : '')} onClick={() => setHistoryTab('location')}>Location History</p>
-                            </div>
-                            
-                            
-                        </div>
-                    }
-                    
-                </div> */}
+                
                 <div className="selectedUserContainer">
                     {!selectedUser && <p>Select an equipment.</p>}
                     <br />

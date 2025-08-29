@@ -1,17 +1,5 @@
 .dash_page.staffManagement {
-    padding: 3.4rem 6rem 1rem 6rem;
-
-    & .header {
-        /* background-color: red; */
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        height: 1.7rem;
-        
-        & button {
-            transform: translate(0, -0.5rem);
-        }
-    }
+    padding: 0 6rem 1rem 6rem;
 
     & h2 {
         font-size: 1.4rem;
@@ -19,71 +7,6 @@
 
 }
 
-
-.dash_page.staffManagement .staffListContainer {
-    ul li {
-        &.selected {
-            background-color: rgb(from var(--accent) r g b / 1);
-            color: white;
-            pointer-events: none;
-        }
-        & img.selected {
-            border: 3px solid white;
-        }
-    }
-
-    & .profileInformation {
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-    }
-
-    & .fullName {
-        font-size: 1.15rem;
-        font-weight: 700;
-    }
-    & .username {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.75;
-    }
-    & .qrLink {
-        margin-left: auto;
-        display: flex;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        align-items: center;
-        justify-content: center;
-        color: transparent ;
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
-        /* background-color: rgb(from var(--blue) r g b / 0.08); */
-        background-color: white;
-
-        &.out {
-            color: var(--orange);
-            background-color: rgb(from var(--orange) r g b / 0.06);
-        }
-        &.pendingOut {
-            color: var(--red);
-            background-color: rgb(from var(--red) r g b / 0.06);
-        }
-        &.in {
-            color: var(--gray);
-            background-color: rgb(from var(--gray) r g b / 0.06);
-        }
-        &.done {
-            color: var(--blue);
-            background-color: rgb(from var(--blue) r g b / 0.06);
-        }
-
-        /* justify-self: flex-end; */
-        &.out {
-            color: var(--orange);
-        }
-    }
-}
 
 
 .overlay {
@@ -113,11 +36,8 @@
     & .header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         
-        & button {
-            transform: translate(0, -0.5rem);
-        }
     }
 }
 

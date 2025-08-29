@@ -1,5 +1,5 @@
 .dash_page.attendanceSheet {
-    padding: 3.4rem 6rem 1rem 6rem;
+    padding: 0 6rem 1rem 6rem;
 
     & h2 {
         font-size: 1.4rem;
@@ -51,12 +51,6 @@ th {
   background: rgb(from var(--accent) r g b / 0.02);
   color: var(--accent);
 } */
-
-.dash_page.attendanceSheet .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
 input {
   color-scheme: light;

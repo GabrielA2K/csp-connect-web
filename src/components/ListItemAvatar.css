@@ -1,0 +1,114 @@
+li.ListItemAvatar {
+    background-color: rgba(255, 255, 255, 1);
+    padding-block: 1.2rem;
+    padding-inline: 1.2rem;
+    border-radius: 1.2rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    border: 1px solid var(--dividerColor);
+    /* border-top: 1px solid rgb(from #484848 r g b / 0.06); */
+    cursor: pointer;
+    transition: 100ms;
+
+    &.selected {
+        background-color: rgb(from var(--accent) r g b / 1);
+        color: white;
+        /* pointer-events: none; */
+        & > img {
+            border: 3px solid white;
+        }
+        & > .Status {
+            color: white !important;
+            opacity: 0.8;
+        }
+
+        &:hover {
+            background-color: hsl(from var(--accent) h 72% 50%);
+        }
+    }
+
+    & > img {
+        border: 0px solid transparent;
+        transition: 200ms;
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    & > .ListItemInformation {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+
+        & > .LargeText {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        & > .SmallText {
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0.56;
+        }
+    }
+
+    & > .Status {
+        margin-left: auto;
+        display: flex;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        align-items: center;
+        justify-content: center;
+        color: transparent ;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        /* background-color: rgb(from var(--blue) r g b / 0.08); */
+        background-color: transparent;
+    }
+
+    &:hover {
+        background-color: rgb(from var(--dividerColor) r g b / 1);
+        transform: translateX(0.2rem);
+    }
+}
+
+
+li.ListItemAvatar > .Status {
+
+    &.OUT {
+        color: var(--red);
+        /* background-color: rgb(from var(--orange) r g b / 0.06); */
+    }
+    &.NOT_IN {
+        color: rgb(from var(--gray) r g b / 0.5);
+        /* background-color: rgb(from var(--gray) r g b / 0.06); */
+    }
+    &.IN {
+        color: var(--blue);
+        /* background-color: rgb(from var(--blue) r g b / 0.06); */
+    }
+
+
+    &.claimed {
+        color: var(--red);
+        /* background-color: rgb(from var(--orange) r g b / 0.06); */
+    }
+    &.unavailable {
+        color: rgb(from var(--gray) r g b / 0.5);
+        /* background-color: rgb(from var(--gray) r g b / 0.06); */
+    }
+    &.unclaimed {
+        color: var(--blue);
+        /* background-color: rgb(from var(--blue) r g b / 0.06); */
+    }
+
+}
+
+
+.staffListContainer .unavailable {
+    cursor: default !important;
+    pointer-events: none;
+}

@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { getAllUsers, batchRegisterUsers, getUserLocationHistory, getUserAttendanceHistory, exportLocation } from '../../api.js';
 import { MapContainer, TileLayer, useMap, Marker, Popup, Polyline } from 'react-leaflet'
 import { format } from 'date-fns'
 import L from 'leaflet';
+
+import { getAllUsers, batchRegisterUsers, getUserLocationHistory, getUserAttendanceHistory, exportLocation } from '../../api.js';
+import { getToday, getFormattedDate } from '../../components/functions/DateTime.js';
+import { arrayHasDuplicates } from '../../components/functions/ObjectsArrays.js';
+
+import ListItemAvatar from '../../components/ListItemAvatar.jsx';
+import MapMover from '../../components/MapMover.jsx';
+
 import './StaffManagement.css';
 import 'leaflet/dist/leaflet.css';
 
@@ -18,17 +25,6 @@ import MapStart from '../../assets/map-start.svg';
 import MapEnd from '../../assets/map-end.svg';
 import MapPoint from '../../assets/map-point.svg';
 
-function MapMover({ center, zoom }) {
-  const map = useMap();
-
-  useEffect(() => {
-    if (zoom?.animated) {
-        map.flyTo(center, zoom.level, { duration: 1.5 });
-    }
-  }, [center, zoom, map]);
-
-  return null;
-}
 
 const StaffManagement = () => {
     const [loaded, setLoad] = useState(false);
@@ -39,33 +35,21 @@ const StaffManagement = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserLocationHistory, setSelectedUserLocationHistory] = useState(null);
     const [selectedUserAttendanceHistory, setSelectedUserAttendanceHistory] = useState(null);
-    
-    const [showForm, setShowForm] = useState(false);
-    const [formData, setFormData] = useState([
-        {
-            username: '',
-            password: ''
-        }
-    ]);
     const [hasDuplicates, setHasDuplicates] = useState(false);
     const [triggerUpdate, setTriggerUpdate] = useState(0);
-
-    const getToday = () => {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    };
+    const [showForm, setShowForm] = useState(false);
+    const [formData, setFormData] = useState([{ username: '', password: '' }]);
     const [dateChosen, setDateChosen] = useState(getToday());
     
     let coordinates = []
+    
     const addUserField = () => {
         setFormData(prevFormData => [
             ...prevFormData,
             { username: '', password: '' }
         ]);
     };
+
     const removeUserField = (index) => {
         setFormData(prevFormData => prevFormData.filter((_, i) => i !== index));
     };
@@ -84,25 +68,6 @@ const StaffManagement = () => {
 
     };
 
-    function hasDuplicateUsernames(arr) {
-        const seen = new Set();
-        for (const user of arr) {
-            const name = user.username.trim();
-            if (name === "") continue; // skip empty usernames
-            if (seen.has(name)) {
-            return true; // duplicate found
-            }
-            seen.add(name);
-        }
-        return false; // no duplicates
-    }
-
-    function getFormattedDate(dateString) {
-        const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        const date = new Date(dateString);
-        return `${dayNames[date.getDay()]}, ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
-    }
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -110,7 +75,6 @@ const StaffManagement = () => {
                 setLoad(false);
                 const response = await getAllUsers();
                 setAllUsers(response.data)
-                // console.log(allUsers);
             } catch (error) {
                 console.error("Error fetching users:", error);
             } finally {
@@ -118,25 +82,9 @@ const StaffManagement = () => {
             }
         };
         fetchUsers();
-        // setShowForm(false);
     }, [triggerUpdate]);
 
     
-    useEffect(() => {
-        if (allUsers) {
-            console.log("Updated users:", allUsers);
-        }
-        
-    }, [allUsers]);
-
-    // useEffect(() => {
-    //     if (selectedUser) {
-    //         console.log("Selected User:", selectedUser);
-    //     }
-        
-    // }, [selectedUser]);
-
-
     const handleRegister = async (e) => {
             e.preventDefault();
             // setLoading(true);
@@ -144,9 +92,6 @@ const StaffManagement = () => {
             try {
                 const credentials = JSON.stringify(formData);
                 const response = await batchRegisterUsers(formData);
-    
-                // const profileResponse = await getProfile();
-                // console.log(profileResponse.data);
                 console.log(response.data);
                 
             } catch (error) {
@@ -160,8 +105,6 @@ const StaffManagement = () => {
                 setHasDuplicates(false);
                 // setLoading(false);
             }
-            
-    
         };
 
         const anyInputExist = formData.some(formItem =>
@@ -174,20 +117,17 @@ const StaffManagement = () => {
             // setHistoryTab('attendance');
             const response = await getUserLocationHistory({ user: userId, date: dateChosen });
             setSelectedUserLocationHistory(response.data);
-            console.log('COORDINATES', response.data);
             (response.data.length > 0) && setCoords([response.data[0]?.location?.coordinates[1], response.data[0]?.location?.coordinates[0]]);
             setZoom({level: 13, animated: true});
 
             coordinates = response.data.map(item => {
                 const [lng, lat] = item.location.coordinates;
-                return [lat, lng]; // Swap positions
+                return [lat, lng];
             });
             handleShowPolyline(coordinates);
             
-            // console.log("Coordinates:", coordinates);
             const attendanceResponse = await getUserAttendanceHistory({ user: userId });
             setSelectedUserAttendanceHistory(attendanceResponse.data);
-            console.log("Attendance Data:", attendanceResponse.data);
         } catch (error) {
             // setLoading(false);
             console.error(error);
@@ -246,7 +186,7 @@ const StaffManagement = () => {
     }
 
     useEffect(() => {
-        setHasDuplicates(hasDuplicateUsernames(formData));
+        setHasDuplicates(arrayHasDuplicates(formData));
     }, [formData]);
 
     const isDuplicateUsername = (username, index) => {
@@ -256,21 +196,21 @@ const StaffManagement = () => {
 
     const mapMarkerStart = L.icon({
         iconUrl: MapStart,
-        iconSize: [48, 48], // size of the icon
-        iconAnchor: [24, 48], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, -48] // point from which the popup should open relative to the iconAnchor
+        iconSize: [48, 48], 
+        iconAnchor: [24, 48], 
+        popupAnchor: [0, -48] 
     });
     const mapMarkerMid = L.icon({
         iconUrl: MapPoint,
-        iconSize: [32, 32], // size of the icon
-        iconAnchor: [16, 16], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+        iconSize: [32, 32],
+        iconAnchor: [16, 16], 
+        popupAnchor: [0, -32] 
     });
     const mapMarkerEnd = L.icon({
         iconUrl: MapEnd,
-        iconSize: [48, 48], // size of the icon
-        iconAnchor: [24, 48], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, -48] // point from which the popup should open relative to the iconAnchor
+        iconSize: [48, 48], 
+        iconAnchor: [24, 48], 
+        popupAnchor: [0, -48] 
     });
 
     
@@ -286,27 +226,18 @@ const StaffManagement = () => {
     const [historyTab, setHistoryTab] = useState('attendance')
 
 
-    const years = [2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037];
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31];
-    
-
     const downloadFile = async () => {
         try {
             setDownloading(true);
             const response = await exportLocation({ user: selectedUser._id, date: dateChosen });
-
-            // Create a blob link to download
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement("a");
             link.href = url;
 
-            // You can hardcode a filename OR extract from response headers
             link.setAttribute("download", `CSP-LocationHistory_${dateChosen}.xlsx`);
             document.body.appendChild(link);
             link.click();
 
-            // Cleanup
             link.remove();
             window.URL.revokeObjectURL(url);
         } catch (error) {
@@ -316,70 +247,57 @@ const StaffManagement = () => {
         }
     };
 
-    useEffect(() => {
-        console.log("Selected date:", dateChosen);
-    }, [dateChosen]);
-
-    useEffect(() => {
-        console.log("USER ATTENDANCE:", selectedUserAttendanceHistory);
-    }, [selectedUserAttendanceHistory]);
-
     return (
         <div className={"dash_page staffManagement" + (loaded ? " show" : "")}>
             <div className="header">
-                <h2>Staff List <span className='textAccent'>{allUsers?.meta?.total}</span></h2>
-                <button onClick={() => { setShowForm(true); setFormData([{ username: '', password: '' }]);}}>Add Staff</button>
+                <div className="textGroup">
+                    <h2>Staff Management</h2>
+                    <p className="subtitle">Add staff members, view staff attendance and location history.</p>
+                </div>
+                
+                <button className='withIcon' onClick={() => { setShowForm(true); setFormData([{ username: '', password: '' }]);}}><Icon icon='mingcute:user-add-2-line' width={20} /> Add Staff</button>
             </div>
             
             <div className="contentContainer">
                 <div className="staffListContainer">
-                    {/* <a href={link} target="_blank" rel="noopener noreferrer">Open QR Code</a> */}
                     <ul>
-                        {allUsers?.data?.map(user => (
-                            <li className={(selectedUser?._id === user._id ? "selected" : "")+(tinyLoaderVisible ? " lock" : "")} key={user._id} onClick={() => {
-                                setSelectedUser(user);
-                                handleFetchLocationHistory(user._id);
-
-                                // useMap().setView([selectedUserLocationHistory[0]?.location?.coordinates[1], selectedUserLocationHistory[0]?.location?.coordinates[0]], 13, { animate: true });
-                            }}>
-                                <img className={selectedUser?._id === user._id ? "selected" : ""}
-                                src={user.profile?.display_picture || 'https://gpmgcm.ac.in/wp-content/uploads/2024/01/Default-Profile.jpg'}
-                                alt=""
-                                />
-                                <div className="profileInformation">
-                                <p className="fullName">
-                                    {user.profile?.first_name || 'No'} {user.profile?.last_name || 'Profile'}
-                                </p>
-                                <p className="username">@{user.username}</p>
+                        {allUsers?.data?.filter(user => user.profile?.first_name || user.profile?.last_name).map(user => (
+                            <ListItemAvatar
+                                id={user._id}
+                                className={(selectedUser?._id === user._id ? "selected" : "")+(tinyLoaderVisible ? " lock" : "")}
+                                avatar={user.profile?.display_picture}
+                                largeText={`${user.profile?.first_name} ${user.profile?.last_name}`}
+                                smallText={user.username}
+                                onClick={() => {
+                                    setSelectedUser(user);
+                                    handleFetchLocationHistory(user._id);
+                                }}
+                            />
+                        ))}
+                        {
+                            allUsers?.data?.filter(user => !user.profile?.first_name || !user.profile?.last_name).length > 0 && (
+                                <div className="separator">
+                                    <p>Not registered</p>
                                 </div>
-                                
-                            </li>
+                            )
+                        }
+                        {allUsers?.data?.filter(user => !user.profile?.first_name || !user.profile?.last_name).map(user => (
+                            <ListItemAvatar
+                                id={user._id}
+                                className={'unavailable'}
+                                avatar={user.profile?.display_picture}
+                                largeText={user.username}
+                                smallText={'No Profile'}
+                            />
                         ))}
                     </ul>
                 </div>
                 <div className="selectedUserContainer">
                     {!selectedUser && <p>Select a user.</p>}
                     <br />
-                    {/* {selectedUser && <p>{selectedUser.profile?.first_name || 'No'} {selectedUser.profile?.last_name || 'Profile'}</p>}
-                    {selectedUser && <p className="username">@{selectedUser.username}</p>} */}
                     {
                         selectedUser &&
                         <div className="userDetails">
-                            {/* <div className="profile">
-                                <li>
-                                    <img className='profileImage'
-                                    src={selectedUser.profile?.display_picture || 'https://gpmgcm.ac.in/wp-content/uploads/2024/01/Default-Profile.jpg'}
-                                    alt=""
-                                    />
-                                    <div className="profileInformation">
-                                    <p className="fullName">
-                                        {selectedUser.profile?.first_name || 'No'} {selectedUser.profile?.last_name || 'Profile'}
-                                    </p>
-                                    <p className="username">@{selectedUser.username}</p>
-                                    </div>
-                                    
-                                </li>
-                            </div> */}
                             <div className="selectedHeader">
                                 <p className={'tabHead'+(historyTab === 'attendance' ? ' active' : '')} onClick={() => setHistoryTab('attendance')}>Attendance History</p>
                                 <p className={'tabHead'+(historyTab === 'location' ? ' active' : '')} onClick={() => setHistoryTab('location')}>Location History</p>
@@ -485,9 +403,6 @@ const StaffManagement = () => {
                             )}
                             <div className={"tinyLoader " + (tinyLoaderVisible ? "visible" : "") + (softReload ? " softReload" : "")}>
                                 <Icon icon="eos-icons:bubble-loading" width={100} color="var(--accent)" />
-                                {/* <br />
-                                <br />
-                                <p>Loading...</p> */}
                             </div>
                         </div>
                     }
@@ -534,7 +449,7 @@ const StaffManagement = () => {
                 <div className="addUserModal" onClick={(e) => e.stopPropagation()}>
                     <div className="header">
                         <h2>Add Staff</h2>
-                        <button className="close" onClick={() => addUserField()}>
+                        <button className="" onClick={() => addUserField()}>
                             Add Field
                         </button>
                     </div>

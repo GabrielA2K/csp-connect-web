@@ -48,7 +48,7 @@ export const deleteAllUsers = () => API.delete('/user/staffs');
 
 export const deleteEquipmentLogs = () => API.delete('/internal/equipment-logs');
 
-
+export const deleteUser = (user) => API.delete(`/user/${user}`);
 
 export const getAttendanceData = (date) => API.get(`/attendance?date=${date}`);
 export const exportAttendance = (date) => API.get(`/attendance/export?date=${date}`, { responseType: "blob" });

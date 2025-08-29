@@ -1,10 +1,11 @@
 .dash_page.attendance {
-    padding: 3.4rem 6rem 1rem 6rem;
+    padding: 0 6rem 1rem 6rem;
 
     & h2 {
         font-size: 1.4rem;
     }
 }
+
 
 .dash_page .contentContainer {
     display: grid;
@@ -60,7 +61,6 @@
     overflow-y: auto;
     /* background-color: var(--lighterGray) !important; */
 
-
     & ul {
         list-style: none;
         display: flex;
@@ -68,80 +68,6 @@
         gap: 0.75rem;
         margin-right: 0.5rem;
         margin-top: 0 !important; 
-    }
-
-    & li {
-        background-color: rgba(255, 255, 255, 1);
-        padding-block: 1.2rem;
-        padding-inline: 1.2rem;
-        border-radius: 1.2rem;
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-        border: 1px solid var(--lightGray);
-        /* border-top: 1px solid rgb(from #484848 r g b / 0.06); */
-        cursor: pointer;
-
-
-        & img {
-            border: 0px solid transparent;
-            transition: 200ms;
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    }
-
-    & .profileInformation {
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-    }
-
-    & .fullName {
-        font-size: 1.15rem;
-        font-weight: 700;
-    }
-    & .username {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.75;
-    }
-    & .qrLink {
-        margin-left: auto;
-        display: flex;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        align-items: center;
-        justify-content: center;
-        color: transparent ;
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
-        /* background-color: rgb(from var(--blue) r g b / 0.08); */
-        background-color: white;
-
-        &.OUT {
-            color: var(--red);
-            /* background-color: rgb(from var(--orange) r g b / 0.06); */
-        }
-        &.pendingOut {
-            color: var(--red);
-            /* background-color: rgb(from var(--red) r g b / 0.06); */
-        }
-        &.NOT_IN {
-            color: rgb(from var(--gray) r g b / 0.5);
-            /* background-color: rgb(from var(--gray) r g b / 0.06); */
-        }
-        &.IN {
-            color: var(--blue);
-            /* background-color: rgb(from var(--blue) r g b / 0.06); */
-        }
-        
-
-        /* justify-self: flex-end; */
-        
     }
 }
 

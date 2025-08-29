@@ -1,5 +1,5 @@
 .dash_page.attendance {
-    padding: 3.4rem 6rem 1rem 6rem;
+    padding: 0 6rem 1rem 6rem;
 
     & h2 {
         font-size: 1.4rem;
@@ -7,76 +7,19 @@
 }
 
 
-
-.dash_page.attendance .staffListContainer {
-
-    & .profileInformation {
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-    }
-
-    & .fullName {
-        font-size: 1.15rem;
-        font-weight: 700;
-    }
-    & .username {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.75;
-    }
-    & .qrLink {
-        margin-left: auto;
-        display: flex;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-        font-weight: 600;
-        align-items: center;
-        justify-content: center;
-        color: transparent ;
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
-        /* background-color: rgb(from var(--blue) r g b / 0.08); */
-        background-color: white;
-
-        &.claimed {
-            color: var(--red);
-            /* background-color: rgb(from var(--orange) r g b / 0.06); */
-        }
-        &.gabriel {
-            color: var(--red);
-            /* background-color: rgb(from var(--red) r g b / 0.06); */
-        }
-        &.unavailable {
-            color: rgb(from var(--gray) r g b / 0.5);
-            /* background-color: rgb(from var(--gray) r g b / 0.06); */
-        }
-        &.unclaimed {
-            color: var(--blue);
-            /* background-color: rgb(from var(--blue) r g b / 0.06); */
-        }
-
-        /* justify-self: flex-end; */
-        &.out {
-            color: var(--orange);
-        }
-    }
+::-webkit-scrollbar {
+    width: 5px;
 }
 
-
-    ::-webkit-scrollbar {
-    width: 5px;
-    }
-
-    ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
+}
+
+::-webkit-scrollbar-thumb {
     background: rgba(88,88,88,0.2); 
     border-radius: 10px;
-    }
+}
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(88,88,88,0.5); 
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(88,88,88,0.5); 
+}

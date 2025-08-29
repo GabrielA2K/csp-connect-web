@@ -1,21 +1,4 @@
-.dash_page.staffManagement {
-    padding: 3.4rem 6rem 1rem 6rem;
 
-    & .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        
-        & button {
-            transform: translate(0, -0.5rem);
-        }
-    }
-
-    & h2 {
-        font-size: 1.4rem;
-    }
-
-}
 
 /* .dash_page.staffManagement .selectedUserContainer {
     & img {
@@ -119,11 +102,11 @@
     & .header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-start;
+        align-items: center;
         
-        & button {
+        /* & button {
             transform: translate(0, -0.5rem);
-        }
+        } */
     }
 }
 

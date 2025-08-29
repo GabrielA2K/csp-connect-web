@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { getAllUsers, getAttendanceQR, getAttendanceOutQR } from '../../api.js';
+import ListItemAvatar from '../../components/ListItemAvatar.jsx';
 import './Attendance.css';
 
 const Attendance = () => {
@@ -26,11 +27,7 @@ const Attendance = () => {
     
     const [qrLinks, setQrLinks] = useState({});
 
-    useEffect(() => {
-        if (allUsers) {
-            console.log("Updated users:", allUsers.data);
-        }
-        
+    useEffect(() => {        
         if (allUsers?.data) {
             allUsers.data.forEach(user => {
             const userData = { user: user._id };
@@ -72,35 +69,49 @@ const Attendance = () => {
 
     return (
         <div className={"dash_page attendance" + (loaded ? " show" : "")}>
-            <h2>Staff List <span className='textAccent'>{allUsers?.data?.length}</span></h2>
+            <div className="header">
+                <div className="textGroup">
+                    <h2>Staff Attendance</h2>
+                    <p className="subtitle">Record attendance for staff members using QR code scanning.</p>
+                </div>
+                
+            </div>
             <div className="contentContainer">
                 <div className="staffListContainer">
-                    {/* <a href={link} target="_blank" rel="noopener noreferrer">Open QR Code</a> */}
                     <ul>
-                        {allUsers?.data?.map(user => (
-                            <li key={user._id} onClick={() => {
-                                setSelectedUser(user);
-                                setSelectedUserQR(qrLinks[user._id]);
-                            }}>
-                                <img
-                                src={user.profile?.display_picture || 'https://gpmgcm.ac.in/wp-content/uploads/2024/01/Default-Profile.jpg'}
-                                alt=""
-                                />
-                                <div className="profileInformation">
-                                <p className="fullName">
-                                    {user.profile?.first_name || 'No'} {user.profile?.last_name || 'Profile'}
-                                </p>
-                                <p className="username">@{user.username}</p>
+                        {allUsers?.data?.filter(user => user.profile?.first_name || user.profile?.last_name).map(user => (
+                            <ListItemAvatar
+                                id={user._id}
+                                className={(selectedUser?._id === user._id ? "selected" : "")}
+                                avatar={user.profile?.display_picture}
+                                largeText={`${user.profile?.first_name} ${user.profile?.last_name}`}
+                                smallText={user.username}
+                                status={user?.attendance_status === 'NOT_IN' ? 'Not Signed In' : (user?.attendance_status === 'IN' ? 'On Duty' : (user?.attendance_status === 'OUT' ? 'Shift Ended' : (user?.attendance_status === 'done' ? 'Signed Out' : '')))}
+                                statusRaw={user?.attendance_status}
+                                icon="material-symbols:circle"
+                                iconWidth={10}
+                                onClick={() => {
+                                    setSelectedUser(user);
+                                    setSelectedUserQR(qrLinks[user._id]);
+                                }}
+                            />
+
+                        ))}
+                        {
+                            allUsers?.data?.filter(user => !user.profile?.first_name || !user.profile?.last_name).length > 0 && (
+                                <div className="separator">
+                                    <p>Not registered</p>
                                 </div>
-                                {
-                                    <div className={"tag qrLink "+user?.attendance_status}>
-                                        <p>{user?.attendance_status === 'NOT_IN' ? 'Not Signed In' : (user?.attendance_status === 'IN' ? 'On Duty' : (user?.attendance_status === 'OUT' ? 'Shift Ended' : (user?.attendance_status === 'done' ? 'Signed Out' : '')))}</p>
-                                        <Icon icon="material-symbols:circle" width={10} />
-                                    </div>
-                                    // (qrLinks[user._id] && qrLinks[user._id].type === 'in') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink'>QR Sign In</a> : (qrLinks[user._id] && qrLinks[user._id].type === 'out') ? <a href={qrLinks[user._id].qr || '#'} target="_blank" rel="noopener noreferrer" className='qrLink out'>QR Sign Out</a> : <p className="qrLink"></p>
-                                }
-                                
-                            </li>
+                            )
+                        }
+                        {allUsers?.data?.filter(user => !user.profile?.first_name || !user.profile?.last_name).map(user => (
+                            <ListItemAvatar
+                                id={user._id}
+                                avatar={'https://gpmgcm.ac.in/wp-content/uploads/2024/01/Default-Profile.jpg'}
+                                largeText={user.username}
+                                smallText={'No Profile'}
+                                className={'unavailable'}
+                            />
                         ))}
                     </ul>
                 </div>
