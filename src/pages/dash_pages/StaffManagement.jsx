@@ -17,9 +17,9 @@ import 'leaflet/dist/leaflet.css';
 import MapMarkerIcon from '../../assets/map-marker.png';
 import CheckBlue from '../../assets/check-blue.svg'
 import ExitOrange from '../../assets/exit-orange.svg'
-import Mobile from '../../assets/mobile-blue.svg'
-import Bag from '../../assets/bag-pink.svg'
-import Uniform from '../../assets/uniform-orange.svg'
+import Mobile from '../../assets/mobile-light.svg'
+import Bag from '../../assets/bag-light.svg'
+import Uniform from '../../assets/uniform-light.svg'
 
 import MapStart from '../../assets/map-start.svg';
 import MapEnd from '../../assets/map-end.svg';
@@ -330,9 +330,9 @@ const StaffManagement = () => {
                                                         />
                                                         <div className="profileInformation">
                                                         <p className="sign_">
-                                                            Signed In
+                                                            {format(new Date(attendance?.time_in), "h:mm a")}
                                                         </p>
-                                                        <p className="time_">{format(new Date(attendance?.time_in), "h:mm a")}</p>
+                                                        <p className="time_">Signed In</p>
                                                         </div>
                                                         
                                                     </li>
@@ -360,16 +360,16 @@ const StaffManagement = () => {
 
                                                 {attendance?.time_out && 
                                                 <div className="attendanceItem">
-                                                    <li className='profileAttendance'>
+                                                    <li className='profileAttendance signOut'>
                                                         <img className='profileAttendance'
                                                         src={ExitOrange}
                                                         alt=""
                                                         />
                                                         <div className="profileInformation">
                                                         <p className="sign_">
-                                                            Signed Out
+                                                            {format(new Date(attendance?.time_out), "h:mm a")}
                                                         </p>
-                                                        <p className="time_">{format(new Date(attendance?.time_out), "h:mm a")}</p>
+                                                        <p className="time_">Signed Out</p>
                                                         </div>
                                                         
                                                     </li>

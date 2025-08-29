@@ -282,8 +282,11 @@ form.addUsersForm {
         gap: 1rem;
         align-items: center;
         justify-content: flex-start;
-        /* border: 1px solid rgba(0, 0, 0, 0.07); */
         cursor: pointer;
+
+        &.signOut {
+            padding-bottom: 0.1rem;
+        }
 
 
         & img.profileAttendance {
@@ -294,7 +297,7 @@ form.addUsersForm {
             margin: 0;
         }
         & .sign_ {
-            font-size: 1.15rem;
+            font-size: 1rem;
             font-weight: 700 ;
             color: var(--text);
         }
@@ -312,7 +315,7 @@ form.addUsersForm {
         padding-left: 1.5rem;
         border: none;
         border-left: 4px solid var(--lightGray);
-        padding-block: 0.5rem;
+        padding-block: 0.8rem;
 
         & img.profileAttendance {
             width: 2.4rem;
@@ -322,14 +325,14 @@ form.addUsersForm {
             margin: 0;
         }
         & .sign_ {
-            font-size: 1rem;
-            font-weight: 700 ;
+            font-size: 0.9rem;
+            font-weight: 600 ;
             color: var(--text);
         }
         & .time_ {
-            font-size: 0.80rem;
-            font-weight: 600;
-            opacity: 0.75;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.64;
         }
         
     }
